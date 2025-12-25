@@ -140,7 +140,7 @@ func (s *SemVer) IncrementPrerelease(version string) (string, error) {
 	// Try to parse last part as number
 	lastIdx := len(parts) - 1
 	num := 0
-	fmt.Sscanf(parts[lastIdx], "%d", &num)
+	_, _ = fmt.Sscanf(parts[lastIdx], "%d", &num)
 	parts[lastIdx] = fmt.Sprintf("%d", num+1)
 
 	newPre := strings.Join(parts, ".")
