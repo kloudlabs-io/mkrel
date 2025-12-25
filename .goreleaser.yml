@@ -60,8 +60,8 @@ brews:
       name: homebrew-tap
       token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
     commit_author:
-      name: kloudlabs-bot
-      email: bot@kloudlabs.io
+      name: Sergei Kolobov
+      email: sergei@kloudlabs.io
     homepage: "https://github.com/kloudlabs-io/mkrel"
     description: "Release management tool with Git Flow and CalVer/SemVer support"
     license: "MIT"
