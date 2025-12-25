@@ -1,0 +1,40 @@
+# Super-Linter workflow - runs on pull requests
+name: Lint
+
+on:
+  pull_request:
+    branches:
+      - develop
+      - main
+
+permissions:
+  contents: read
+  statuses: write
+
+jobs:
+  lint:
+    name: Super-Linter
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Run Super-Linter
+        uses: super-linter/super-linter@v7
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BRANCH: main
+          VALIDATE_ALL_CODEBASE: false
+          # Go
+          VALIDATE_GO: true
+          VALIDATE_GO_MODULES: true
+          # YAML
+          VALIDATE_YAML: true
+          # Markdown
+          VALIDATE_MARKDOWN: true
+          # GitHub Actions
+          VALIDATE_GITHUB_ACTIONS: true
+          # Shell scripts (if any)
+          VALIDATE_BASH: true
+          VALIDATE_SHELL_SHFMT: true

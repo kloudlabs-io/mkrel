@@ -1,0 +1,34 @@
+{
+  // Renovate configuration for mkrel
+  // https://docs.renovatebot.com/configuration-options/
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+
+  // Use recommended base config
+  "extends": [
+    "config:recommended"
+  ],
+
+  // Target develop branch for dependency updates
+  "baseBranches": [
+    "develop"
+  ],
+
+  // Labels for PRs
+  "labels": [
+    "dependencies"
+  ],
+
+  // Automerge minor and patch updates for dev dependencies
+  "packageRules": [
+    {
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "matchDepTypes": [
+        "devDependencies"
+      ],
+      "automerge": true
+    }
+  ]
+}

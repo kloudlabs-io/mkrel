@@ -1,0 +1,78 @@
+# GoReleaser configuration for mkrel
+# Docs: https://goreleaser.com
+version: 2
+
+project_name: mkrel
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - id: mkrel
+    main: ./cmd/mkrel
+    binary: mkrel
+    # CGO_ENABLED=0 creates fully static binaries
+    env:
+      - CGO_ENABLED=0
+    # Build for multiple OS/architectures
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    # Inject version info at build time using ldflags
+    ldflags:
+      - -s -w
+      - -X github.com/kloudlabs-io/mkrel/internal/cli.Version={{.Version}}
+      - -X github.com/kloudlabs-io/mkrel/internal/cli.Commit={{.Commit}}
+      - -X github.com/kloudlabs-io/mkrel/internal/cli.Date={{.Date}}
+
+archives:
+  - id: default
+    format: tar.gz
+    # Use zip for Windows
+    format_overrides:
+      - goos: windows
+        format: zip
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+
+checksum:
+  name_template: "checksums.txt"
+
+# Generate changelog from git commits
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+      - "^chore:"
+      - "^ci:"
+
+# Homebrew tap configuration
+brews:
+  - name: mkrel
+    repository:
+      owner: kloudlabs-io
+      name: homebrew-tap
+      token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
+    commit_author:
+      name: kloudlabs-bot
+      email: bot@kloudlabs.io
+    homepage: "https://github.com/kloudlabs-io/mkrel"
+    description: "Release management tool with Git Flow and CalVer/SemVer support"
+    license: "MIT"
+    install: |
+      bin.install "mkrel"
+    test: |
+      system "#{bin}/mkrel", "version"
+
+release:
+  github:
+    owner: kloudlabs-io
+    name: mkrel
+  draft: false
+  prerelease: auto
