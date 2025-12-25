@@ -32,11 +32,13 @@ builds:
 
 archives:
   - id: default
-    format: tar.gz
+    formats:
+      - tar.gz
     # Use zip for Windows
     format_overrides:
       - goos: windows
-        format: zip
+        formats:
+          - zip
     name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
 
 checksum:
@@ -52,10 +54,9 @@ changelog:
       - "^chore:"
       - "^ci:"
 
-# Homebrew tap configuration
-brews:
-  - name: mkrel
-    repository:
+# Homebrew cask configuration (replaces deprecated brews)
+homebrew_casks:
+  - repository:
       owner: kloudlabs-io
       name: homebrew-tap
       token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
@@ -65,10 +66,6 @@ brews:
     homepage: "https://github.com/kloudlabs-io/mkrel"
     description: "Release management tool with Git Flow and CalVer/SemVer support"
     license: "MIT"
-    install: |
-      bin.install "mkrel"
-    test: |
-      system "#{bin}/mkrel", "version"
 
 release:
   github:
