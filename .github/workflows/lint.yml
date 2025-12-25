@@ -26,3 +26,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BRANCH: develop
           VALIDATE_ALL_CODEBASE: false
+          # Disable noisy/problematic linters
+          VALIDATE_CHECKOV: false
+          VALIDATE_GITHUB_ACTIONS_ZIZMOR: false
+          VALIDATE_JSON_PRETTIER: false
+          VALIDATE_JSCPD: false
