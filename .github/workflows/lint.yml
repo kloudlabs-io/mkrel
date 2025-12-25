@@ -24,17 +24,5 @@ jobs:
         uses: super-linter/super-linter@v8
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DEFAULT_BRANCH: main
+          DEFAULT_BRANCH: develop
           VALIDATE_ALL_CODEBASE: false
-          # Go
-          VALIDATE_GO: true
-          VALIDATE_GO_MODULES: true
-          # YAML
-          VALIDATE_YAML: true
-          # Markdown
-          VALIDATE_MARKDOWN: true
-          # GitHub Actions
-          VALIDATE_GITHUB_ACTIONS: true
-          # Shell scripts (if any)
-          VALIDATE_BASH: true
-          VALIDATE_SHELL_SHFMT: true
