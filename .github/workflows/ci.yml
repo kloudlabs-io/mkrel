@@ -18,11 +18,10 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Set up mise
-        uses: jdx/mise-action@v2
-
-      - name: Download dependencies
-        run: go mod download
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: .tool-versions
 
       - name: Run tests
         run: go test -v -race ./...
@@ -36,8 +35,10 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Set up mise
-        uses: jdx/mise-action@v2
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: .tool-versions
 
       - name: Build
         run: go build -v ./cmd/mkrel
@@ -51,8 +52,10 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Set up mise
-        uses: jdx/mise-action@v2
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: .tool-versions
 
       - name: Run golangci-lint
         uses: golangci/golangci-lint-action@v9
