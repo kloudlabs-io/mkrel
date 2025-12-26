@@ -1,0 +1,37 @@
+# Super-Linter workflow - runs on pull requests
+name: Lint
+
+on:
+  pull_request:
+    branches:
+      - develop
+      - main
+
+permissions:
+  contents: read
+  statuses: write
+
+jobs:
+  lint:
+    name: Super-Linter
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Run Super-Linter
+        uses: super-linter/super-linter@v8
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BRANCH: develop
+          VALIDATE_ALL_CODEBASE: false
+          # Use linter configs from repo root (e.g., .golangci.yml)
+          LINTER_RULES_PATH: .
+          # Disable noisy/problematic linters
+          VALIDATE_CHECKOV: false
+          VALIDATE_GITHUB_ACTIONS_ZIZMOR: false
+          # GO runs golangci-lint per-file which fails across packages; use GO_MODULES instead
+          VALIDATE_GO: false
+          VALIDATE_JSONC_PRETTIER: false
+          VALIDATE_JSCPD: false

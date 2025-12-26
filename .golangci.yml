@@ -1,0 +1,30 @@
+# golangci-lint configuration
+# https://golangci-lint.run/usage/configuration/
+version: "2"
+
+linters:
+  default: none
+  enable:
+    - errcheck
+    - govet
+    - ineffassign
+    - staticcheck
+    - unused
+
+linters-settings:
+  errcheck:
+    # Don't check for errors in fmt.Print* functions
+    check-blank: false
+    exclude-functions:
+      - fmt.Fprint
+      - fmt.Fprintf
+      - fmt.Fprintln
+      - fmt.Print
+      - fmt.Printf
+      - fmt.Println
+      - fmt.Sscanf
+
+  govet:
+    # Disable shadow checking - too noisy for if err := ...; err != nil patterns
+    disable:
+      - shadow
