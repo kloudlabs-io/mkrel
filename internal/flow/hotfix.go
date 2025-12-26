@@ -21,16 +21,12 @@ func (f *Flow) HotfixStart() error {
 		return fmt.Errorf("hotfix already in progress: %s", hotfixes[0])
 	}
 
-	// 2. Get main branch
-	mainBranch, err := f.repo.GetMainBranch()
-	if err != nil {
-		return err
-	}
-	f.print("    Using main branch: %s", mainBranch)
+	// 2. Use configured main branch
+	f.print("    Using main branch: %s", f.mainBranch)
 
 	// 3. Checkout main and ensure clean
-	if err := f.repo.Checkout(mainBranch); err != nil {
-		return fmt.Errorf("failed to checkout %s: %w", mainBranch, err)
+	if err := f.repo.Checkout(f.mainBranch); err != nil {
+		return fmt.Errorf("failed to checkout %s: %w", f.mainBranch, err)
 	}
 
 	hasChanges, err := f.repo.HasUncommittedChanges()
@@ -58,7 +54,7 @@ func (f *Flow) HotfixStart() error {
 	branchName := "hotfix/" + nextVersion
 	f.print("    Creating branch: %s", branchName)
 
-	if err := f.repo.CreateBranch(branchName, mainBranch); err != nil {
+	if err := f.repo.CreateBranch(branchName, f.mainBranch); err != nil {
 		return fmt.Errorf("failed to create hotfix branch: %w", err)
 	}
 
@@ -95,15 +91,9 @@ func (f *Flow) HotfixFinish() error {
 	hotfixVersion := strings.TrimPrefix(hotfixBranch, "hotfix/")
 	f.print("    Version: %s", hotfixVersion)
 
-	// 2. Get main and develop branches
-	mainBranch, err := f.repo.GetMainBranch()
-	if err != nil {
-		return err
-	}
-	developBranch, err := f.repo.GetDevelopBranch()
-	if err != nil {
-		return err
-	}
+	// 2. Use configured main and develop branches
+	mainBranch := f.mainBranch
+	developBranch := f.devBranch
 
 	// 3. Checkout hotfix branch and verify clean
 	if err := f.repo.Checkout(hotfixBranch); err != nil {

@@ -72,10 +72,12 @@ func runReleaseStart(cmd *cobra.Command, args []string) error {
 
 	// Create flow with config
 	f, err := flow.New(flow.Options{
-		Scheme:  cfg.Scheme,
-		Remote:  cfg.Remote,
-		DryRun:  dryRun,
-		Verbose: verbose,
+		Scheme:     cfg.Scheme,
+		Remote:     cfg.Remote,
+		MainBranch: cfg.Branches.Main,
+		DevBranch:  cfg.Branches.Develop,
+		DryRun:     dryRun,
+		Verbose:    verbose,
 	})
 	if err != nil {
 		return err
@@ -97,10 +99,12 @@ func runReleaseFinish(cmd *cobra.Command, args []string) error {
 	}
 
 	f, err := flow.New(flow.Options{
-		Scheme:  cfg.Scheme,
-		Remote:  cfg.Remote,
-		DryRun:  dryRun,
-		Verbose: verbose,
+		Scheme:     cfg.Scheme,
+		Remote:     cfg.Remote,
+		MainBranch: cfg.Branches.Main,
+		DevBranch:  cfg.Branches.Develop,
+		DryRun:     dryRun,
+		Verbose:    verbose,
 	})
 	if err != nil {
 		return err

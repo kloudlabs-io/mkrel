@@ -21,16 +21,12 @@ func (f *Flow) ReleaseStart() error {
 		return fmt.Errorf("release already in progress: %s", releases[0])
 	}
 
-	// 2. Get develop branch
-	developBranch, err := f.repo.GetDevelopBranch()
-	if err != nil {
-		return err
-	}
-	f.print("    Using develop branch: %s", developBranch)
+	// 2. Use configured develop branch
+	f.print("    Using develop branch: %s", f.devBranch)
 
 	// 3. Checkout develop and ensure clean
-	if err := f.repo.Checkout(developBranch); err != nil {
-		return fmt.Errorf("failed to checkout %s: %w", developBranch, err)
+	if err := f.repo.Checkout(f.devBranch); err != nil {
+		return fmt.Errorf("failed to checkout %s: %w", f.devBranch, err)
 	}
 
 	hasChanges, err := f.repo.HasUncommittedChanges()
@@ -64,7 +60,7 @@ func (f *Flow) ReleaseStart() error {
 	branchName := "release/" + nextVersion
 	f.print("    Creating branch: %s", branchName)
 
-	if err := f.repo.CreateBranch(branchName, developBranch); err != nil {
+	if err := f.repo.CreateBranch(branchName, f.devBranch); err != nil {
 		return fmt.Errorf("failed to create release branch: %w", err)
 	}
 
@@ -104,15 +100,9 @@ func (f *Flow) ReleaseFinish(startNew bool) error {
 	finalVersion := f.versioner.RemovePrerelease(releaseVersion)
 	f.print("    Final version: %s", finalVersion)
 
-	// 2. Get main and develop branches
-	mainBranch, err := f.repo.GetMainBranch()
-	if err != nil {
-		return err
-	}
-	developBranch, err := f.repo.GetDevelopBranch()
-	if err != nil {
-		return err
-	}
+	// 2. Use configured main and develop branches
+	mainBranch := f.mainBranch
+	developBranch := f.devBranch
 
 	// 3. Checkout release branch and verify clean
 	if err := f.repo.Checkout(releaseBranch); err != nil {
