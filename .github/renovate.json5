@@ -8,6 +8,9 @@
     "config:recommended"
   ],
 
+  // This repo is a fork of skolobov/mkrel - enable Renovate processing
+  "forkProcessing": "enabled",
+
   // Target develop branch for dependency updates
   "baseBranches": [
     "develop"
