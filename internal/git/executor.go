@@ -69,12 +69,10 @@ func (e *Executor) Run(args ...string) (string, error) {
 }
 
 // RunSilent runs a command without printing, even in verbose mode.
-// Useful for commands like checking if a branch exists.
+// Useful for read-only commands like checking if a branch exists.
+// Note: This always executes, even in dry-run mode, because it's used
+// for read-only queries that don't modify the repository.
 func (e *Executor) RunSilent(args ...string) (string, error) {
-	if e.dryRun {
-		return "", nil
-	}
-
 	cmd := exec.Command("git", args...)
 	cmd.Dir = e.workDir
 
