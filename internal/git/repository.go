@@ -8,15 +8,13 @@ import (
 )
 
 // Repository represents a git repository and provides high-level operations.
-// It composes an Executor - this is Go's version of inheritance (composition over inheritance).
 type Repository struct {
-	exec *Executor // Embedded pointer to Executor
+	exec *Executor
 }
 
 // NewRepository creates a Repository for the given directory.
 // If dir is empty, it uses the current working directory.
 func NewRepository(dir string, dryRun, verbose bool) (*Repository, error) {
-	// If no directory specified, use current working directory
 	if dir == "" {
 		var err error
 		dir, err = os.Getwd()
@@ -25,7 +23,6 @@ func NewRepository(dir string, dryRun, verbose bool) (*Repository, error) {
 		}
 	}
 
-	// Verify it's a git repository by checking for .git
 	gitDir := filepath.Join(dir, ".git")
 	if _, err := os.Stat(gitDir); os.IsNotExist(err) {
 		return nil, fmt.Errorf("not a git repository: %s", dir)
@@ -38,20 +35,17 @@ func NewRepository(dir string, dryRun, verbose bool) (*Repository, error) {
 
 // CurrentBranch returns the name of the current branch.
 func (r *Repository) CurrentBranch() (string, error) {
-	// git rev-parse --abbrev-ref HEAD returns current branch name
 	return r.exec.Run("rev-parse", "--abbrev-ref", "HEAD")
 }
 
 // BranchExists checks if a branch exists (local or remote).
 func (r *Repository) BranchExists(name string) bool {
-	// git show-ref returns 0 if ref exists, non-zero otherwise
 	_, err := r.exec.RunSilent("show-ref", "--verify", "--quiet", "refs/heads/"+name)
 	return err == nil
 }
 
 // ListBranches returns branches matching a prefix (e.g., "release/").
 func (r *Repository) ListBranches(prefix string) ([]string, error) {
-	// git branch --list 'prefix*' returns matching branches
 	output, err := r.exec.RunSilent("branch", "--list", prefix+"*")
 	if err != nil {
 		return nil, err
@@ -64,9 +58,8 @@ func (r *Repository) ListBranches(prefix string) ([]string, error) {
 	// Parse output: each line is "  branch-name" or "* branch-name" (current)
 	var branches []string
 	for _, line := range strings.Split(output, "\n") {
-		// Remove leading "* " or "  "
 		branch := strings.TrimSpace(line)
-		branch = strings.TrimPrefix(branch, "* ")
+		branch = strings.TrimPrefix(branch, "* ") // Remove current branch marker
 		if branch != "" {
 			branches = append(branches, branch)
 		}
@@ -123,7 +116,6 @@ func (r *Repository) Commit(message string) error {
 
 // GetDevelopBranch finds the develop branch (might be "develop" or "development").
 func (r *Repository) GetDevelopBranch() (string, error) {
-	// Try common names
 	for _, name := range []string{"develop", "development", "dev"} {
 		if r.BranchExists(name) {
 			return name, nil
