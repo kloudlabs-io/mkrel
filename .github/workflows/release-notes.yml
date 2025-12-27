@@ -1,0 +1,47 @@
+# Automatically creates and updates release notes draft based on merged PRs
+name: Release Notes
+
+on:
+  # Run on pushes to develop (draft updates) and main (release finalization)
+  push:
+    branches:
+      - develop
+    tags:
+      - "v*"
+
+  # Run on PR events to apply labels based on branch names and PR title
+  pull_request:
+
+  # Allow running the workflow manually from GitHub UI
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  update-release-notes:
+    name: Update Release Notes
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Create or Update Release Notes
+        if: github.event_name != 'pull_request'
+        uses: release-drafter/release-drafter@v6
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          publish: ${{ startsWith(github.ref, 'refs/tags/v') }}
+          disable-autolabeler: false
+          commitish: ${{ github.ref }}
+
+      - name: Label PR
+        if: github.event_name == 'pull_request'
+        uses: release-drafter/release-drafter@v6
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          publish: false
+          disable-autolabeler: false
+          commitish: ${{ github.head_ref }}
