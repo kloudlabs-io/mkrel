@@ -5,11 +5,11 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// Build-time variables set by GoReleaser.
+// Build-time variables set by GoReleaser via -ldflags.
 var (
-	Version = "dev"
-	Commit  = "none"
-	Date    = "unknown"
+	Version = "dev"     // Semantic version (e.g., "1.0.0")
+	Commit  = "none"    // Git commit hash
+	Date    = "unknown" // Build date
 )
 
 var rootCmd = &cobra.Command{
