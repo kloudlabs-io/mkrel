@@ -1,0 +1,111 @@
+# Configuration for Release Drafter
+# https://github.com/release-drafter/release-drafter
+
+# Release name and tag formats
+name-template: "$RESOLVED_VERSION"
+tag-template: "v$RESOLVED_VERSION"
+
+# Main release notes template
+template: |
+  ## What's Changed
+
+  $CHANGES
+
+# Format for individual PR entries
+change-template: "- $TITLE by @$AUTHOR in #$NUMBER"
+
+# Category definitions for grouping changes
+categories:
+  - title: "Breaking Changes"
+    labels:
+      - breaking
+      - major
+
+  - title: "Features"
+    labels:
+      - feature
+      - enhancement
+      - minor
+
+  - title: "Bug Fixes"
+    labels:
+      - fix
+      - bugfix
+      - bug
+      - patch
+
+  - title: "Documentation"
+    labels:
+      - documentation
+      - docs
+
+  # Collapse maintenance changes if more than 10
+  - title: "Maintenance"
+    labels:
+      - chore
+    collapse-after: 10
+
+  # Collapse dependency updates if more than 5
+  - title: "Dependencies"
+    labels:
+      - dependencies
+    collapse-after: 5
+
+# Version resolver for SemVer
+version-resolver:
+  major:
+    labels:
+      - major
+      - breaking
+  minor:
+    labels:
+      - minor
+      - feature
+      - enhancement
+  patch:
+    labels:
+      - patch
+      - fix
+      - bugfix
+      - bug
+      - chore
+      - documentation
+      - docs
+      - dependencies
+  default: patch
+
+# Release notes section formatting
+category-template: "### $TITLE"
+sort-by: merged_at
+sort-direction: ascending
+
+# Automatic PR labeling based on branch names and file patterns
+autolabeler:
+  - label: feature
+    branch:
+      - /feat\/.+/
+      - /feature\/.+/
+
+  - label: fix
+    branch:
+      - /fix\/.+/
+      - /hotfix\/.+/
+      - /bugfix\/.+/
+
+  - label: chore
+    branch:
+      - /chore\/.+/
+      - /ci\/.+/
+      - /refactor\/.+/
+
+  - label: documentation
+    branch:
+      - /docs\/.+/
+    files:
+      - "*.md"
+      - "docs/**/*"
+
+  - label: dependencies
+    branch:
+      - /renovate\/.+/
+      - /dependabot\/.+/
