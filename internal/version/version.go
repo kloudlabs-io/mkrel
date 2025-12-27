@@ -20,9 +20,7 @@ const (
 	SchemeSemVer Scheme = "semver" // Semantic versioning
 )
 
-// Versioner is an INTERFACE - it defines behavior, not implementation.
-// Any type that has these methods "implements" Versioner automatically.
-// This is called "implicit interface implementation" - no "implements" keyword needed!
+// Versioner defines the interface for version management.
 type Versioner interface {
 	// Current returns the current version string.
 	Current() (string, error)
@@ -45,8 +43,6 @@ type Versioner interface {
 }
 
 // New creates a Versioner for the specified scheme.
-// This is a FACTORY FUNCTION - returns an interface, not a concrete type.
-// Callers don't need to know if they're getting CalVer or SemVer.
 func New(scheme Scheme, latestTagFn func() (string, error)) (Versioner, error) {
 	switch scheme {
 	case SchemeCalVer:

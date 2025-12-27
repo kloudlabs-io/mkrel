@@ -11,24 +11,18 @@ import (
 // CalVer implements calendar versioning with format YYYY.MM.DD.
 // For hotfixes on the same day, it appends -1, -2, etc.
 type CalVer struct {
-	// latestTagFn is a function that returns the latest git tag.
-	// We inject this as a function (dependency injection) rather than
-	// having CalVer depend directly on the git package.
 	latestTagFn func() (string, error)
-
-	// now is the time function, injectable for testing
-	now func() time.Time
+	now         func() time.Time
 }
 
 // calverPattern matches YYYY.MM.DD or YYYY.MM.DD-N format.
-// The (?:-(\d+))? part is optional, capturing the hotfix number.
 var calverPattern = regexp.MustCompile(`^(\d{4})\.(\d{2})\.(\d{2})(?:-(\d+))?$`)
 
 // NewCalVer creates a CalVer versioner.
 func NewCalVer(latestTagFn func() (string, error)) *CalVer {
 	return &CalVer{
 		latestTagFn: latestTagFn,
-		now:         time.Now, // Default to real time; can override for tests
+		now:         time.Now,
 	}
 }
 
