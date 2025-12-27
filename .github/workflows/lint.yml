@@ -29,9 +29,12 @@ jobs:
           # Use linter configs from repo root (e.g., .golangci.yml)
           LINTER_RULES_PATH: .
           # Disable noisy/problematic linters
+          # Disable Biome until proper migration
+          VALIDATE_BIOME_FORMAT: false
+          VALIDATE_BIOME_LINT: false
           VALIDATE_CHECKOV: false
           VALIDATE_GITHUB_ACTIONS_ZIZMOR: false
           # GO runs golangci-lint per-file which fails across packages; use GO_MODULES instead
           VALIDATE_GO: false
-          VALIDATE_JSONC_PRETTIER: false
           VALIDATE_JSCPD: false
+          VALIDATE_JSONC_PRETTIER: false
