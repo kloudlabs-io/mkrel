@@ -8,6 +8,7 @@ on:
 permissions:
   contents: read
   pull-requests: write
+  issues: write
   id-token: write
 
 jobs:
@@ -37,3 +38,5 @@ jobs:
             Use `gh pr diff` to see changes and `gh pr view` for details.
             Post your review using `gh pr comment` for feedback.
             Do not output review text as messages - only post via gh commands.
+
+          claude_args: '--allowed-tools "Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*),Bash(gh pr list:*)"'
