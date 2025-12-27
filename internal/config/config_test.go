@@ -8,6 +8,23 @@ import (
 	"github.com/kloudlabs-io/mkrel/internal/version"
 )
 
+// chdir changes directory and returns a cleanup function to restore the original.
+func chdir(t *testing.T, dir string) {
+	t.Helper()
+	oldWd, err := os.Getwd()
+	if err != nil {
+		t.Fatalf("Failed to get working directory: %v", err)
+	}
+	if err := os.Chdir(dir); err != nil {
+		t.Fatalf("Failed to change to directory %s: %v", dir, err)
+	}
+	t.Cleanup(func() {
+		if err := os.Chdir(oldWd); err != nil {
+			t.Errorf("Failed to restore working directory: %v", err)
+		}
+	})
+}
+
 func TestDefault(t *testing.T) {
 	cfg := Default()
 
@@ -31,9 +48,7 @@ func TestDefault(t *testing.T) {
 func TestLoad_NoConfigFile(t *testing.T) {
 	// Create a temp directory with no config file
 	tmpDir := t.TempDir()
-	oldWd, _ := os.Getwd()
-	defer os.Chdir(oldWd)
-	os.Chdir(tmpDir)
+	chdir(t, tmpDir)
 
 	cfg, err := Load("")
 	if err != nil {
@@ -148,9 +163,7 @@ scheme: [invalid yaml
 
 func TestExists(t *testing.T) {
 	tmpDir := t.TempDir()
-	oldWd, _ := os.Getwd()
-	defer os.Chdir(oldWd)
-	os.Chdir(tmpDir)
+	chdir(t, tmpDir)
 
 	// No config file exists
 	if Exists() {
@@ -183,9 +196,7 @@ func TestFindConfigFile(t *testing.T) {
 	}
 
 	// Change to subdirectory
-	oldWd, _ := os.Getwd()
-	defer os.Chdir(oldWd)
-	os.Chdir(subDir)
+	chdir(t, subDir)
 
 	// Should find config in parent directory
 	found, err := FindConfigFile()
@@ -200,9 +211,7 @@ func TestFindConfigFile(t *testing.T) {
 
 func TestFindConfigFile_NotFound(t *testing.T) {
 	tmpDir := t.TempDir()
-	oldWd, _ := os.Getwd()
-	defer os.Chdir(oldWd)
-	os.Chdir(tmpDir)
+	chdir(t, tmpDir)
 
 	// No config file anywhere
 	found, err := FindConfigFile()
