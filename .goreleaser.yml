@@ -44,15 +44,9 @@ archives:
 checksum:
   name_template: "checksums.txt"
 
-# Generate changelog from git commits
+# Disable changelog - using Release Drafter for release notes
 changelog:
-  sort: asc
-  filters:
-    exclude:
-      - "^docs:"
-      - "^test:"
-      - "^chore:"
-      - "^ci:"
+  disable: true
 
 # Homebrew cask configuration (replaces deprecated brews)
 homebrew_casks:
