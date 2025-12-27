@@ -8,7 +8,9 @@ import (
 	"github.com/kloudlabs-io/mkrel/internal/version"
 )
 
-// chdir changes directory and returns a cleanup function to restore the original.
+// chdir changes the working directory and registers cleanup to restore it.
+// Note: Tests using this helper cannot run in parallel (no t.Parallel())
+// because they share the process-wide working directory.
 func chdir(t *testing.T, dir string) {
 	t.Helper()
 	oldWd, err := os.Getwd()
