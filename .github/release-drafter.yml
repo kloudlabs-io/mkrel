@@ -41,7 +41,8 @@ categories:
 
   # Collapse maintenance changes if more than 10
   - title: "Maintenance"
-    label: chore
+    labels:
+      - chore
     collapse-after: 10
 
   # Collapse dependency updates if more than 5
@@ -82,27 +83,29 @@ sort-direction: ascending
 autolabeler:
   - label: feature
     branch:
-      - '/feat\/.+/'
-      - '/feature\/.+/'
+      - /feat\/.+/
+      - /feature\/.+/
 
   - label: fix
     branch:
-      - '/fix\/.+/'
-      - '/hotfix\/.+/'
+      - /fix\/.+/
+      - /hotfix\/.+/
+      - /bugfix\/.+/
 
   - label: chore
     branch:
-      - '/chore\/.+/'
-      - '/ci\/.+/'
+      - /chore\/.+/
+      - /ci\/.+/
+      - /refactor\/.+/
 
   - label: documentation
     branch:
-      - '/docs\/.+/'
+      - /docs\/.+/
     files:
-      - '*.md'
-      - 'docs/**/*'
+      - "*.md"
+      - "docs/**/*"
 
   - label: dependencies
     branch:
-      - '/renovate\/.+/'
-      - '/dependabot\/.+/'
+      - /renovate\/.+/
+      - /dependabot\/.+/

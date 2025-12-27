@@ -13,15 +13,13 @@ on:
   # Allow running the workflow manually from GitHub UI
   workflow_dispatch:
 
-permissions:
-  contents: write
-  pull-requests: write
-
 jobs:
   draft-release:
     name: Update Draft Release
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Create or Update Release Notes
         uses: release-drafter/release-drafter@v6
@@ -32,6 +30,8 @@ jobs:
     name: Label PR
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
     steps:
       - name: Apply Labels
         uses: release-drafter/release-drafter@v6
