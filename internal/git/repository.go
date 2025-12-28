@@ -46,7 +46,7 @@ func (r *Repository) BranchExists(name string) bool {
 
 // ListBranches returns branches matching a prefix (e.g., "release/").
 func (r *Repository) ListBranches(prefix string) ([]string, error) {
-	output, err := r.exec.RunSilent("branch", "--list", prefix+"*")
+	output, err := r.exec.RunSilent("branch", "--list", "--no-color", prefix+"*")
 	if err != nil {
 		return nil, err
 	}
