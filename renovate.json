@@ -2,5 +2,24 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:recommended"
+  ],
+  "forkProcessing": "enabled",
+  "baseBranchPatterns": [
+    "develop"
+  ],
+  "labels": [
+    "dependencies"
+  ],
+  "packageRules": [
+    {
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "matchDepTypes": [
+        "devDependencies"
+      ],
+      "automerge": true
+    }
   ]
 }
