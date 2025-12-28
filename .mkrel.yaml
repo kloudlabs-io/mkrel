@@ -1,0 +1,15 @@
+# mkrel configuration for this repository
+# See README.md for full documentation
+
+# Versioning scheme: "semver" (MAJOR.MINOR.PATCH) or "calver" (YYYY.MM.DD)
+scheme: semver
+
+# Git branch names for Git Flow workflow
+branches:
+  # Branch where releases are merged and tagged
+  main: main
+  # Branch where feature development happens
+  develop: develop
+
+# Git remote name for push operations
+remote: origin
