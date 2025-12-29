@@ -54,8 +54,8 @@ changelog:
       - "^chore:"
       - "^ci:"
 
-# Homebrew cask configuration (replaces deprecated brews)
-homebrew_casks:
+# Homebrew formula for CLI tool distribution
+brews:
   - repository:
       owner: kloudlabs-io
       name: homebrew-tap
@@ -66,6 +66,8 @@ homebrew_casks:
     homepage: "https://github.com/kloudlabs-io/mkrel"
     description: "Release management tool with Git Flow and CalVer/SemVer support"
     license: "MIT"
+    install: |
+      bin.install "mkrel"
 
 release:
   github:
