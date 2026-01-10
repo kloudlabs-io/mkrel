@@ -75,7 +75,7 @@ func (f *Flow) ReleaseStart() error {
 
 // ReleaseFinish completes the current release.
 // It merges to main, tags, merges to develop, and pushes.
-func (f *Flow) ReleaseFinish(startNew bool) error {
+func (f *Flow) ReleaseFinish() error {
 	f.print("==> Finishing release")
 
 	// 1. Find release branch
@@ -159,12 +159,6 @@ func (f *Flow) ReleaseFinish(startNew bool) error {
 	}
 
 	f.printAlways("==> Released %s", finalVersion)
-
-	// 9. Optionally start new release
-	if startNew {
-		f.printAlways("")
-		return f.ReleaseStart()
-	}
 
 	return nil
 }
