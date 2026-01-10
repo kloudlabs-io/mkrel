@@ -109,4 +109,4 @@ remote: origin
 
 ## License
 
-MIT License - Copyright (c) 2020-2024 Sergei Kolobov, 2025 KloudLabs LLC
+MIT License - Copyright (c) 2020-2024 Sergei Kolobov, 2025-2026 KloudLabs LLC
