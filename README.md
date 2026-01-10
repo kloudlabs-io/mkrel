@@ -66,10 +66,6 @@ Finishes the current release:
 3. Merges back to develop
 4. Pushes everything to remote
 
-Options:
-
-- `-s, --start-new` - Start a new release immediately after finishing
-
 ### mkrel hotfix start
 
 Creates a hotfix branch from main with a patch version:

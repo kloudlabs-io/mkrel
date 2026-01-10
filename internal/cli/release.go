@@ -53,8 +53,6 @@ func init() {
 	releaseCmd.AddCommand(releaseStartCmd)
 	releaseCmd.AddCommand(releaseFinishCmd)
 
-	releaseFinishCmd.Flags().BoolP("start-new", "s", false,
-		"start a new release immediately after finishing")
 }
 
 // runReleaseStart executes the release start command.
@@ -90,7 +88,6 @@ func runReleaseStart(cmd *cobra.Command, args []string) error {
 func runReleaseFinish(cmd *cobra.Command, args []string) error {
 	dryRun, _ := cmd.Flags().GetBool("dry-run")
 	verbose, _ := cmd.Flags().GetBool("verbose")
-	startNew, _ := cmd.Flags().GetBool("start-new")
 	configPath, _ := cmd.Flags().GetString("config")
 
 	cfg, err := config.Load(configPath)
@@ -110,5 +107,5 @@ func runReleaseFinish(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	return f.ReleaseFinish(startNew)
+	return f.ReleaseFinish()
 }
